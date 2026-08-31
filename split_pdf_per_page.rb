@@ -1,0 +1,421 @@
+# require "combine_pdf"
+# require "fileutils"
+
+# def split_pdf(
+#   pdf_path = "./tmp/Scientists_-_Dorling_Kindersley.pdf",
+#   output_dir = "./Scientists_-_Dorling_Kindersley"
+# )
+#   FileUtils.mkdir_p(output_dir)
+
+#   pdf = CombinePDF.load(pdf_path)
+
+#   pdf.pages.each_with_index do |page, index|
+#     page_number = index + 1
+#     output_path = File.join(output_dir, "#{page_number}.pdf")
+
+#     new_pdf = CombinePDF.new
+#     new_pdf << page
+#     new_pdf.save(output_path)
+
+#     puts "Created #{output_path}"
+#   end
+
+#   puts "Done! #{pdf.pages.length} pages created."
+# end
+
+# split_pdf
+
+#--------------------------------------------------------
+
+require "hexapdf"
+require "fileutils"
+
+
+def split_pdf(
+  pdf_path = "./tmp/World_War_II_The_Definitive_Visual_History.pdf",
+  output_dir = "./books/visual-books/World_War_II_The_Definitive_Visual_History"
+)
+  FileUtils.mkdir_p(output_dir)
+
+  pdf = HexaPDF::Document.open(pdf_path)
+
+  pdf.pages.each_with_index do |page, index|
+    page_number = index + 1
+    output_path = File.join(output_dir, "#{page_number}.pdf")
+
+    new_pdf = HexaPDF::Document.new
+
+    new_page = new_pdf.import(page)
+    new_pdf.pages.add(new_page)
+
+    new_pdf.write(output_path)
+
+    puts "Created #{page_number}.pdf"
+  end
+
+  puts "Done! #{pdf.pages.count} pages created."
+end
+
+#split_pdf
+
+# file_names = [
+#     "201607_dmystify_Life.pdf",
+#     "201608_dmystify_Quantum_world.pdf",
+#     "201609_dmsytify_Human_Body.pdf",
+#     "201610_dmsytify_Geology_Dating.pdf",
+#     "201611_dmsytify_Intelligent_Plants.pdf",
+#     "201612_dmystify_Natural_Selection.pdf",
+#     "201701_dmystify_Time.pdf",
+#     "201702_dmystify_Stars.pdf",
+#     "201703_dmystify_Microscopic_Life.pdf",
+#     "201704_dmystify_Fossils.pdf",
+#     "201705_dmystify_Oceans.pdf",
+#     "201706_dmystify_Pseudoscience.pdf",
+#     "201707_dmystify_The_Sun.pdf",
+#     "201708_dmystify_Gravity.pdf",
+#     "201709_dmystify_Fringe Science.pdf",
+#     "201710_dmystify_Game Theory.pdf",
+#     "201711_dmystify_Gravitational Waves.pdf",
+#     "201712_dmystify_Unsung Science Heroes.pdf",
+#     "201801_dmystify_Water.pdf",
+#     "201802_dmystify_Dinosaurs.pdf",
+#     "201803_dmystify_Sound.pdf",
+#     "201804_dmystify_Light.pdf",
+#     "201805_Dmystify_LHC.pdf",
+#     "201806_dmystify_Moons of the Solar System.pdf",
+#     "201807_dmystify_Exoplanets.pdf",
+#     "201808_dmystify_ISRO.pdf",
+#     "201809_dmystify_Mars.pdf",
+#     "201810_dmystify_Subatomic Particles.pdf",
+#     "201811_dmystify_Electricity.pdf",
+#     "201812_dmystify_Antimatter.pdf",
+#     "201901_dmystify_Space.pdf",
+#     "201902_dmystify_The Atmosphere.pdf",
+#     "201903_dmystify_DNA.pdf",
+#     "201904_dmystify_Physics.pdf",
+#     "201905_Dmystify_Chemistry.pdf",
+#     "201906_dmystify_18 Wacky science experiments.pdf",
+#     "201907_dmystify_Biology.pdf",
+#     "201908_Dmystify_Volcanoes.pdf",
+#     "201909_Dmystify_Music.pdf",
+#     "201910_Dmystify_Archaeology.pdf",
+#     "201911_Dmystify_Quantum Chromodynamics.pdf",
+#     "201912_Dmystify_Spaceflight 2020s.pdf",
+#     "202001_Dmystify_Fungi.pdf",
+#     "202002_Dmystify_Astrobiology.pdf",
+#     "202003_Dmystify_Viruses.pdf",
+#     "202004_Dmystify_Extinction.pdf",
+#     "202005_Dmystify_Homo_Sapiens.pdf",
+#     "202006_dmystify_Vaccines.pdf",
+#     "202007_dmystify_The Ice Age.pdf",
+#     "202008_dmystify_Languages.pdf",
+#     "202009_dmystify_Plate tectonics.pdf",
+#     "202010_dmystify_Biochemistry.pdf",
+#     "202012_dmystify_Explorers.pdf",
+#     "202101_dmystify_Nothing.pdf",
+#     "202102_dmystify_Forensic Science.pdf",
+#     "202103_dmystify_Snakes.pdf",
+#     "202104_dmystify_Microtechnology.pdf",
+#     "202105_dmystify_Asteroids.pdf",
+#     "202107_dmystify_Gases.pdf",
+#     "202108_dmystify_Hydraulics.pdf",
+#     "202109_dmystify_Optics.pdf",
+#     "202110_dmystify_Colonising Mars.pdf",
+#     "202111_dmystify_Chaos Theory.pdf",
+#     "202112_dmystify_Pollution.pdf",
+#     "202201_dmystify_Plants.pdf",
+#     "202202_dmystify_Oil.pdf",
+#     "202203_dmystify_Units.pdf",
+#     "202204_dmystify_Telescopes.pdf",
+#     "202205_dmystify_Notbable Scientists - Part 1.pdf",
+#     "202206_dmystify_Notbable Scientists - Part 2.pdf",
+#     "202207_dmystify_Magnetism.pdf",
+#     "202208_dmystify_Motion.pdf",
+#     "202209_dmystify_Heat.pdf",
+#     "202210_dmystify_Birds.pdf",
+#     "202211_dmystify_Carbon.pdf"
+# ]
+
+
+# file_names.each do |file_name|
+#   split_pdf(
+#     pdf_path= "./tmp/#{file_name}",
+#     output_dir= "./books/visual-books/digit_dmystify/#{File.basename(file_name, '.pdf')}"
+#   )
+# end
+
+# file_names = [
+#   'History_of_the_World_Map_by_Map_DK_Publishing.pdf',
+#   'Super_Simple_Biology.pdf',
+#   'SuperSimple_Chemistry_-_DK_UserUpload_Net.pdf',
+#   'Super_Simple_Physics_-_DK.pdf',
+# 'The_Amazon_-_Tom_Jackson_DK_Eyewitness.pdf',
+#   'The_Animal_Book_A_Visual_Encyclopedia_of_Life_on_Earth.pdf',
+#   'THE_BODY_ATLAS_-_A_PICTORIAL_GUIDE_TO_THE_HUMAN_BODY_-_1ST_ED__2020_Giuliano_Fornari_Steve_Parker.pdf',
+#  'DK_Life_Stories_Albert_Einstein_-_Wil_Mara.pdf',
+#   'How_Food_Works_-_DK.pdf',
+#   'How_Management_Works_The_Concepts_Visually_Explained_by_DK.pdf',
+#   'How_to_be_a_Global_Citizen_Be_Informed_Get_Involved_by_Dorling_Kindersley.pdf',
+#   'Journey_An_Illustrated_History_of_Travel_DK_Simon_Adams.pdf',
+#   'Medical_Symptoms_Visual_Guide_The_Easy_Way_to_Identify_Medical_Problems_2nd_Edition_DK_Dorling_Kindersley.pdf'
+#  'My_Encyclopedia_of_Very_Important_Things.pdf',
+#  'Philosophy_A_Visual_Encyclopedia_DK.pdf',
+#  'The_Illustrated_Mahabharata_The_Definitive_Guide_to_Indias_Greatest_Epic_DK.pdf',
+#  'The_Poetry_Book_-_DK.pdf',
+#  'The_Religions_Book.pdf',
+#  'Whats_the_Point_of_Philosophy_-_DK.pdf',
+#  'What_s_the_Point_of_Science_by_DK.pdf'
+# ]
+
+file_names = [
+  "200503_FT_Photography.pdf",
+  "200504_FT_Antivirus.pdf",
+  "200505_FT_Wireless.pdf",
+  "200506_FT_UpgradeYour_PC.pdf",
+  "200507_FT_MSOffice.pdf",
+  "200508_FT_Internet.pdf",
+  "200509_FT_YourWebPresence.pdf",
+  "200510_FT_Digital_Entertainment.pdf",
+  "200511_FT_Essential_Windows_Tools.pdf",
+  "200512_FT_Gaming.pdf",
+  "200601_FT_Mobile_Telephony.pdf",
+  "200602_FT_Windows_XP.pdf",
+  "200603_FT_Troubleshooting_Your_PC.pdf",
+  "200604_FT_Linux.pdf",
+  "200605_FT_Photoshop.pdf",
+  "200606_FT_DIGITAL_AUDIO.pdf",
+  "200607_FT_WEB_DESIGN.pdf",
+  "200608_FT_Registry.pdf",
+  "200609_FT_Security.pdf",
+  "200610_FT_DIGITAL_VIDEO.pdf",
+  "200611_FT_Open_Source_Software.pdf",
+  "200612_FT_Google.pdf",
+  "200701_FT_Google_Advanced.pdf",
+  "200702_FT_Blogging.pdf",
+  "200703_FT_Freeware.pdf",
+  "200704_FT_The_Student_Web.pdf",
+  "200705_FT_EXCEL_2007.pdf",
+  "200706_FT_Windows_Vista.pdf",
+  "200707_FT_Apple.pdf",
+  "200708_FT_The_Social_Web.pdf",
+  "200709_FT_The_Free_Office.pdf",
+  "200710_FT_PowerPoint.pdf",
+  "200711_FT_Computing_Ages,_Events,_Evolution.pdf",
+  "200801_FT_Tech_Jargon.pdf",
+  "200802_FT_Web_Essentials.pdf",
+  "200803_FT_Web_Advanced.pdf",
+  "200804_FT_Digital_Imaging.pdf",
+  "200805_FT_SketchUp.pdf",
+  "200807_FT_Troubleshooting_II.pdf",
+  "200808_FT_Keyboard_Shortcuts.pdf",
+  "200809_FT_FlashCS3.pdf",
+  "200810_FT_Advanced_Flash.pdf",
+  "200811_FT_C++.pdf",
+  "200812_FT_Vista_Secrets.pdf",
+  "200901_FT_PHP.pdf",
+  "200902_FT_Linux_Beginners.pdf",
+  "200903_FT_Digital_Photography.pdf",
+  "200904_FT_Ajax.pdf",
+  "200905_FT_Freeware.pdf",
+  "200906_FT-Jumbo_Tech_Careers.pdf",
+  "200906_FT_Mobile_Apps.pdf",
+  "200907_FT_Security.pdf",
+  "200908_FT_Open_Source_Software.pdf",
+  "200909_FT_Wireless_Technologies.pdf",
+  "200910_FT_Your_Mobile_Phone.pdf",
+  "200911_FT_Gaming_Consoles.pdf",
+  "200912_FT_Agent001.pdf",
+  "201001_FT_Maya.pdf",
+  "201002_FT_OpenSolaris.pdf",
+  "201003_FT_Mac_OS.pdf",
+  "201004_FT_Facebook_Apps.pdf",
+  "201005_FT_iPhone.pdf",
+  "201006_FT_Ethical_Hacking.pdf",
+  "201007_FT_Linux_Administration.pdf",
+  "201008_FT_CSS.pdf",
+  "201009_FT_Making_Money_from_Web_Services.pdf",
+  "201010_FT_WordPress.pdf",
+  "201011_FT_Windows7.pdf",
+  "201012_FT_Build_Your_Own_Robot.pdf",
+  "201101_FT_Java.pdf",
+  "201102_FT_.Net.pdf",
+  "201103_FT_Android.pdf",
+  "201104_FT_3Ds_Max.pdf",
+  "201105_FT_Android_SDK.pdf",
+  "201106_FT-MeeGo.pdf",
+  "201106_FT_Ubuntu.pdf",
+  "201107_FT_Developing_Chrome_Apps.pdf",
+  "201107_FT_Rich_Internet_Apps.pdf",
+  "201108_FT_Facebook+Google.pdf",
+  "201108_FT_iOS.pdf",
+  "201109_FT_Nano_Technology.pdf",
+  "201110_FT_bada.pdf",
+  "201110_FT_HTML5.pdf",
+  "201111_FT_Digital_Photography.pdf",
+  "201112_FT_Artificial_Intelligence.pdf",
+  "201201_FT_Space_Exploration.pdf",
+  "201202_FT_Networking_Everything.pdf",
+  "201203_FT_Careers_in_Gaming.pdf",
+  "201203_FT_Security_Redux.pdf",
+  "201204_FT_Virtualization.pdf",
+  "201205_FT_Windows_Phone.pdf",
+  "201206_FT_Tablets.pdf",
+  "201207_FT_Hacking_your_mobile_device.pdf",
+  "201208_FT_Free_Everything.pdf",
+  "201209_FT_Going_Green.pdf",
+  "201210_FT_E-commerce.pdf",
+  "201211_FT_Cryptography.pdf",
+  "201212_FT_Cyber_Crime.pdf",
+  "201301_FT_Augmented_Reality.pdf",
+  "201302_FT_Windows_8.pdf",
+  "201303_FT_Mobile_Apps.pdf",
+  "201304_FT_Mobile_Gaming.pdf",
+  "201305_FT_100_Inventions_of_All_Time.pdf",
+  "201306_FT_Embedded_Systems.pdf",
+  "201307_FT_Mobile_and_Laptop_Hardware.pdf",
+  "201308_FT_BlackBerry_10.pdf",
+  "201309_FT_PC_Hardware.pdf",
+  "201310_FT_Cloud_Services.pdf",
+  "201311_FT_Developing_for_Firefox.pdf",
+  "201312_FT_iOS7.pdf",
+  "201401_FT_Tech_Careers.pdf",
+  "201402_FT_Mining_Bitcoins.pdf",
+  "201403_FT_3D_Printing.pdf",
+  "201404_FT_Smartphone_Photography.pdf",
+  "201405_FT_Office_Suites.pdf",
+  "201406_FT_Chrome_OS.pdf",
+  "201407_FT_E-Learning.pdf",
+  "201408_FT_Backing_up_your_digital_life.pdf",
+  "201409_FT_Multimedia_Editing.pdf",
+  "201410_FT_Rediscovering_Linux.pdf",
+  "201411_FT_Apple_Tech_Today.pdf",
+  "201412_FT_Arduino_for_Everyone.pdf",
+  "201501_FT_Hottest_Programming_Languages_Today.pdf",
+  "201502_FT_Emulating_Everything.pdf",
+  "201503_FT_Kids_Tech.pdf",
+  "201504_FT_Raspberry_Pi.pdf",
+  "201505_FT_Internet_of_Things.pdf",
+  "201506_FT_Learn_Anthing.pdf",
+  "201507_FT_Open_Source_Creative_Suite.pdf",
+  "201508_FT_Custom_CMS_Using_Django.pdf",
+  "201509_FT_Windows_10.pdf",
+  "201510_FT_UX_Design.pdf",
+  "201511_FT_Wearables.pdf",
+  "201601_FT_Maker_Technology.pdf",
+  "201602_FT_Virtual_Reality.pdf",
+  "201603_FT_Display_Technology.pdf",
+  "201604_FT_Big_Data.pdf",
+  "201605_FT_Social_Media_Management.pdf",
+  "201606_FT_Android_Studio.pdf",
+  "201607_FT_Swift.pdf",
+  "201608_FT_SEO.pdf",
+  "201609_FT_Build_Your_Own_Website.pdf",
+  "201610_FT_Secure_Everything.pdf",
+  "201611_FT_Audio_Tech.pdf",
+  "201612_FT_Home_Automation.pdf",
+  "201701_FT_Angular__2.pdf",
+  "201702_FT_Become_a_Youtuber.pdf",
+  "201703_FT_Consoles.pdf",
+  "201704_FT_Robotics.pdf",
+  "201705_FT_SoCs.pdf",
+  "201706_FT_Building_a_PC.pdf",
+  "201707_FT_Coding_Better.pdf",
+  "201708_FT_Apple_Ecosystem_1.pdf",
+  "201709_FT_Apple_Ecosystem_2.pdf",
+  "201710_FT_Google_(Part_1).pdf",
+  "201711_FT_Google_(Part_2).pdf",
+  "201712_FT_Making_Money_from_Home.pdf",
+  "201801_FT_Amazon_Web_Services.pdf",
+  "201802_FT_Blockchain.pdf",
+  "201803_FT_Selling_Online.pdf",
+  "201804_FT_Laravel.pdf",
+  "201805_FT_Adobe_XD.pdf",
+  "201806_FT_Custom_Android_ROM.pdf",
+  "201807_FT_Google_Analytics.pdf",
+  "201808_FT_Python.pdf",
+  "201809_FT_PC_Cooling.pdf",
+  "201810_FT_3D_Games_in_Unity.pdf",
+  "201811_FT_Shopping_Smarter_Online.pdf",
+  "201812_FT_Building_AR_Apps.pdf",
+  "201901_FT_Getting_Started_with_AI.pdf",
+  "201902_FT_Photo_Editing.pdf",
+  "201903_FT_Microsoft_Excel.pdf",
+  "201904_FT_Blender.pdf",
+  "201905_FT_Keras.pdf",
+  "201906A_FT_Ethical_Hacking.pdf",
+  "201906B_FT_100_Open-Source_Software_You_Must_Try.pdf",
+  "201907_FT_Ubuntu.pdf",
+  "201908_FT_Social_Media_Marketing.pdf",
+  "201909_FT_Flutter.pdf",
+  "201910_FT_Electronics.pdf",
+  "201911_FT_Best_Mobile_Games.pdf",
+  "201912_FT_TikTok-ing.pdf",
+  "202001_FT_MySQL.pdf",
+  "202002_FT_Unreal_Engine.pdf",
+  "202003_FT_Essential_Software.pdf",
+  "202004_FT_Hacking_The_Command_Line.pdf",
+  "202005_FT_Unity_2D.pdf",
+  "202006a_FT_The_How_To_Guide_(Part_1).pdf",
+  "202006b_FT_Hacking_the_Command_Line.pdf",
+  "202007_FT_The_How_To_Guide_(Part_2).pdf",
+  "202008_FT_Becoming_A_Better_Developer.pdf",
+  "202009_FT_Software_Testing.pdf",
+  "202010_FT_Django_3.pdf",
+  "202011_FT_Microsoft_s_Productivity_Suite.pdf",
+  "202012_FT_Adobe_Animate.pdf",
+  "202101_FT_Livestreaming_Games_-_A.pdf",
+  "202102_FT_Livestreaming_Games_-_B.pdf",
+  "202103_FT_FreeBSD.pdf",
+  "202104_FT_Building_a_Discord_community.pdf",
+  "202105_FT_Vue.js.pdf",
+  "202106_FT_Vue.js_-_Part_-_2.pdf",
+  "202107_FT_Autodesk_Motionbuilder.pdf",
+  "202108a_FT_Must_Have_Apps.pdf",
+  "202108b_FT_Linux_Server_Administration.pdf",
+  "202109_FT_Digit_Video_Editing_on_Mobiles.pdf",
+  "202110_FT_Digit_Adobe_After_Effects.pdf",
+  "202111a_FT_Everything_Crypto.pdf",
+  "202111b_FT_Managing_Your_Data_Privacy.pdf",
+  "202112_Linux_Desktop_Environments.pdf",
+  "202201_Researching_Anything.pdf",
+  "202202_Android_Modifications.pdf",
+  "202203_FT_Windows_Registry.pdf",
+  "202204_FT_Ethical_Hacking.pdf",
+  "202205_FT_Robotics.pdf",
+  "202206_FT_Must_Have_Windows_11_Apss.pdf",
+  "202207_FT_Getting_Everything_Done_For_Free.pdf",
+  "202208_FT_Google_Workspace.pdf",
+  "202209_FT_WordPress.pdf",
+  "202210_FT_Adobe_Illustrator.pdf",
+  "202211_FT_Coding_in_2022.pdf",
+  "202302_Digit_FT_to_Audio_Production.pdf",
+  "202303_Digit_FT_to_Stable_Diffusion.pdf",
+  "202304_Digit_FT_to_AI_Apps.pdf",
+  "202305_Digit_FT_to_Android_App_Development.pdf",
+  "202306_Digit_FT_to_PC_Maintenance_(Part_-_1).pdf",
+  "202306_Digit_FT_to_Prompt_Engineering.pdf",
+  "202307_FT_to_PC_Maintenance_(Part_-_2).pdf",
+  "202308_FT_to_Home_Automation.pdf",
+  "202309_FT_to_Unreal_Engine_5.pdf",
+  "202310_FT_to_Android_App_Development_(Foldables_Edition).pdf",
+  "202311_FT_to_Notion.pdf",
+  "202312_FT_CodingWithAI.pdf",
+  "202401_FT_Metaverse.pdf",
+  "202402_FT_Canva.pdf",
+  "202403_FT_QuantumComputing.pdf",
+  "202404_FT_OnlineSafety.pdf",
+  "202405_FT_DigitalDetox.pdf",
+  "202406_FT_to_AI_Unleashed.pdf",
+  "202407_FT_to_Coding_-_Part_-_1.pdf",
+  "202408_FT_to_Coding_-_Part_-_2.pdf",
+  "202409_FT_to_Content_Creation.pdf",
+  "202410_FT_to_Buying_Gadgets.pdf",
+  "202411_FT_to_Tech_Jargons.pdf"
+]
+
+file_names.each do |file_name|
+  split_pdf(
+    pdf_path= "./tmp/#{file_name}",
+    output_dir= "./books/visual-books/digit_fast_track/#{File.basename(file_name, '.pdf')}"
+  )
+end
